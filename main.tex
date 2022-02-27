@@ -1,0 +1,317 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[letterpaper, total={7.5in, 9in}]{geometry}
+\usepackage{amsmath}
+
+\title{Applied Partial Differential Equations}
+\author{Grant Smith}
+\date{Spring 2022}
+
+\begin{document}
+
+\maketitle
+
+\section{Classifying PDEs}
+
+\begin{itemize}
+    \item 2) Classify the following operators as linear or nonlinear:
+    \begin{enumerate}
+        \item $\mathcal{L} u = u_x + xu_y$ -- linear
+        \item $\mathcal{L} u = u_x + uu_y$ -- nonlinear
+        \item $\mathcal{L} u = u_x + \left(u_y\right)^2$ -- nonlinear
+        \item $\mathcal{L} u = u_x + u_y + 1$ -- nonlinear
+        \item $\mathcal{L} u =  \sqrt{1+x^2}\left(cos(y)\right)u_x+u_{yxy}-\left[arctan(x/y)\right]u $ -- linear
+    \end{enumerate}
+    \item 3) For each of the following equations, state the order and whether it is nonlinear, linear inhomogeneous, or linear homogeneous. Provide reasons.
+
+        \begin{tabular}{|| c| c| c| c|| }
+        \hline
+        Equation & Order & Classification & Reason \\ 
+        \hline \hline
+ $u_t - u_{xx} + 1 = 0$ & 2 & linear inhomogeneous & inspection \\ \hline
+ $u_t - u_{xx} + xu = 0$ & 2 & linear homogeneous & inspection \\ \hline
+ $u_t - u_{xxt} + uu_x = 0$ & 3 & linear homogeneous & inspection \\ \hline
+ $u_{tt} - u_{xx} + x^2 = 0$ & 2 & linear inhomogeneous & inspection \\ \hline
+ $iu_t - u_{xx} + u/x = 0$ & 2 & linear inhomogeneous & inspection \\ \hline
+ $u_x(1+u_x^2)^{-1/2} + u_y(1+u_y^2)^{-1/2} = 0$ & 1 & nonlinear & The derivative terms are squared \\ \hline
+ $u_x - e^yu_{y} = 0$ & 1 & linear homogeneous & inspection \\ \hline
+ $u_t + u_{xxxx} + \sqrt{1+u} = 0$ & 4 & nonlinear & u is under the square root \\
+\hline
+\end{tabular}
+
+\item 4) Show that the difference of two solutions of an inhomogenous linear equation $\mathcal{L} u = g$ with the same $g$ is a solution of the homogenous equation $\mathcal{L} u =0$
+
+\begin{enumerate}
+    \item let solution 1 be $u_1$, and let solution 2 be $u_2$
+    \item the question asks about the difference of the two solutions. Thus, $\mathcal{L} \left( u_1 - u_2 \right)$
+    \item because $\mathcal{L}$ is linear, $\mathcal{L} \left( u_1 - u_2 \right)$ = $\mathcal{L}  u_1 - \mathcal{L}  u_2 = g - g = 0$
+    \item thus, $u_1 - u_2$ is a solution to $\mathcal{L} u =0$
+    
+\end{enumerate}
+
+\end{itemize}
+\newpage
+\section{First Order Linear PDEs}
+
+\subsection{Deriving the Method of Characteristics}
+
+
+
+The problem we will solve is of the form 
+$$ a(x,y) \frac{\partial u}{\partial x}(x,y) + b(x,y) \frac{\partial u}{\partial y}(x,y) = c(x,y)$$
+
+It's solution is:
+
+$$\frac{\partial x}{\partial s}(s,t) = a^*(s,t)$$
+$$\frac{\partial y}{\partial s}(s,t) = b^*(s,t)$$
+$$ \frac{\partial u^*}{\partial s}(s,t) = c^*(s,t)$$
+
+Which we will derive now. First, let's define some coordinate transforms.  These will help us get x and y from s and t
+
+$$x(s,t); y(s,t)$$
+
+And we will define our transforms to be bijective (or nonzero Jacobians), so we can go the other way and get s and t from x and y
+
+$$s(x,y); t(x,y)$$
+
+This is enforced by:
+
+$$ x(s(x,y),t(x,y)) = x $$
+$$ y(s(x,y),t(x,y)) = y$$
+$$s(x(s,t),y(s,t)) = s $$
+$$ t(x(s,t),y(s,t)) = t$$
+
+We also have a transformed u that we get by using these transform equations:
+
+$$u^*(s,t):= u(x(s,t),y(s,t))$$
+
+And for posterity and clarity's sake, we show that we can get u back from the transformed u:
+
+$$u(x,y) = u^{**}(x,y) = u^*(x(s(x,y),t(x,y)),y(s(x,y),t(x,y)))$$
+
+We can also transform the whole first equation:
+
+$$a^*(s,t) \frac{\partial u}{\partial x}^*(s,t) + b^*(s,t) \frac{\partial u}{\partial y}^*(s,t) = c^*(s,t)$$
+
+Here, we rewrite $u^*$ for convenience
+
+$$u^*(s,t):= u(x(s,t),y(s,t))$$
+
+We could differentiate $u^*$ with respect to either of its arguments. Let's just choose the first one for now, $s$.
+
+$$\frac{\partial u^*}{\partial s}(s,t) = \frac{\partial u}{\partial x}(x(s,t),y(s,t)) \frac{\partial x}{\partial s}(s,t) + \frac{\partial u}{\partial y}(x(s,t),y(s,t)) \frac{\partial y}{\partial s}(s,t)$$
+
+And we can do the coordinate transform on the partials of $u$ to get:
+
+$$\frac{\partial u^*}{\partial s}(s,t) = \frac{\partial u}{\partial x}^*(s,t) \frac{\partial x}{\partial s}(s,t) + \frac{\partial u}{\partial y}^*(s,t) \frac{\partial y}{\partial s}(s,t)$$
+
+Which we can pattern match against the transformed version of the original equation (rewritten here for convenience)
+
+$$a^*(s,t) \frac{\partial u}{\partial x}^*(s,t) + b^*(s,t) \frac{\partial u}{\partial y}^*(s,t) = c^*(s,t)$$
+
+ or 
+
+$$c^*(s,t)= \frac{\partial u}{\partial x}^*(s,t)a^*(s,t) +  \frac{\partial u}{\partial y}^*(s,t)b^*(s,t)$$
+
+and get:
+
+$$\frac{\partial x}{\partial s}(s,t) = a^*(s,t)$$
+$$\frac{\partial y}{\partial s}(s,t) = b^*(s,t)$$
+$$ \frac{\partial u^*}{\partial s}(s,t) = c^*(s,t)$$
+
+\newpage
+
+\subsection{Problems}
+
+\begin{itemize}
+    \item 1) Solve: $2u_t + 3u_x = 0$
+    \begin{enumerate}
+        \item The form of this equation hints at a directional derivative. So if we change the coordinates to one which runs along this direction, then we have a nice form of differential equation.
+        \item Change the coordinates:
+        $$u\left(x(c,k),t(c,k)\right) = u^*(c,k)$$
+        \item Now, pick one of the variables, $c$ or $k$, and partially differentiate the above equation with respect to that variable. For example, we'll pick $c$.
+        $$\frac{\partial u}{\partial x} \frac{\partial x}{\partial c} + \frac{\partial u}{\partial t} \frac{\partial t}{\partial c} = \frac{\partial u^*}{\partial c}$$
+        \item By pattern matching against the initial equation, we have the following three equations:
+            $$\frac{\partial x}{\partial c} = 3 ; \frac{\partial t}{\partial c} = 2; \frac{\partial u^*}{\partial c} = 0$$
+        \item By solving all three, we get the following:
+            $$x = 3c + f_1(k) ; t = 2c + f_2(k); u^* = f(k)$$
+        \item Given that the relationships between $x, t, c, k$ are just coordinate transforms, we can choose $f_1$ and $f_2$ to be suitable. We choose $f_1 = k$ and $f_2 = 0$, which gives us the following:
+        $$x = 3c + k ; t = 2c; u^* = f(k)$$
+        This works because we know that as $c$ and $k$ vary throughout the whole plane, the corresponding $x$ and $y$ will also trace the whole plane. Also, these are convenient choices because the initial condition has $t=0$, so having $t$ be a very simple function (i.e. not dependent upon $k$) will be convenient.
+        \item We can rearrange to get:
+        $$c = \frac{t}{2} ; k = x - \frac{3t}{2}$$
+        \item Looking back at step 2, we can now write: 
+        $$u\left(x(c,k),t(c,k)\right) = u^*(c,k) = f(k)$$
+        And if we transform the coordinates back using our equation for $k$ in step 7, we have:
+        $$u(x,t) = f (x-\frac{3t}{2})$$
+        \item Now we use the initial condition that $$u(x,0) = sin(x) = f(x)$$
+        \item Now we know that $$u(x,t) = sin(x-\frac{3t}{2})$$
+        \item And this also works if we plug it into the original equation.
+        
+
+    \end{enumerate}
+    
+    \newpage
+    \item 2) Solve $3u_y + u_{xy} = 0$
+    \begin{enumerate}
+        \item Assuming differentiability, we can change the order of integration, so $3u_y + u_{yx} = 0$
+        \item Let $v = u_y$. This gives $3v + v_x = 0$
+        \item Rearranging gives:
+        $$\frac{\partial v}{\partial x} = -3v$$
+        \item separating and integrating:
+        $$\frac{-1}{3}\frac{\partial v}{v} =\partial x$$
+        $$\frac{-1}{3}\ln\left| v\right| = x + f^{***}(y)$$
+        $$\ln\left| v\right| = -3x + f^{**}(y)$$
+        $$\left| v\right| = e^{-3x}f^*(y)$$
+        And assuming that $f^*$ can be positive or negative, we can drop the absolute value:
+        $$v = e^{-3x}f^*(y)$$
+        \item Remembering that $v$ is not necessarily $u$, 
+        $$\frac{\partial u}{\partial y} = u_y = v = e^{-3x}f^*(y)$$
+        $$\partial u = e^{-3x}f^*(y) \partial y$$
+        $$u  = e^{-3x}f(y) + g(x)$$
+        \item Which satisfies the original PDE, which can be verified by substitution.
+        \item I suppose I haven't proven that this is the most general form of the equation, but I don't really know how to prove that. I know that this is linear, so any linear combination of this function will also work, but all linear combinations are already captured in $f$ and $g$. 
+        
+    \end{enumerate}
+    \newpage
+    \item 7) Solve the equation 
+    $$yu_x + xu_y = 0; u(0,y) = e^{-y^2}$$
+    And find the region of the x-y plane in which the solution is uniquely determined.
+    \begin{enumerate}
+        \item Note that this is the directional derivative of u.  Thus, we change coordinates using the transform $T$:
+        $$T(u) = u^*(t,k) = u(x(t,k),y(t,k))$$
+        \item Now take the partial derivative of both sides with respect to $t$ or $k$. Either should work. We'll arbitrarily choose $t$.
+        $$\frac{\partial u}{\partial x}\frac{\partial x}{\partial t} + \frac{\partial u}{\partial y}\frac{\partial y}{\partial t} = \frac{\partial u^*}{\partial t}$$
+        \item Now pattern match against the original equation to get the following PDEs:
+        $$\frac{\partial x}{\partial t} = y;\frac{\partial y}{\partial t} = x;\frac{\partial u^*}{\partial t} = 0$$
+
+        \item Now we will focus on the other two PDEs. Please forgive this poor mathematics, but I will integrate them and get the following:
+        $$x = yt + f_1(k); y = xt + f_2(k); u^* = f(k)$$
+        Which, using the third equation, now extends the equality from step 1 to:
+        $$T(u) = u^*(t,k) = u(x(t,k),y(t,k)) = f(k)$$
+        \item Let's pause for a moment to discuss the region of the x-y plane in which the solution is uniquely determined. The equation gets information along the line $x=0$. This means that any characteristic curve that does not pass through this line will not be uniquely determined. Given the shape of the characteristic curves determined in step 4, there is an "X" shape in the x-y plane formed by $y=x$ and $y=-x$ that determines the areas of determination. The areas of the x-y plane that are between these two lines are not determined, but the area above and below both of these lines is determined. Thus, it makes a sort of bow-tie of non-determinedness, and an hourglass of determinedness. 
+        \item Having discussed the determinedness, I also will mention that I'm not sure how to choose $f_1$ and $f_2$ such that they sweep the entire x-y plane. I seem to only be able to get half of it without making a non-injective function. Given this fact along with the fact that we only will be able to define a solution in the hourglass region anyway, I will choose $f_1$ and $f_2$ to sweep that region, and I will ignore the bow-tie region. Thus, we can choose:
+        $$ f_1(k) = 0; f_2(k) = k$$
+        So
+        $$x = yt; y = xt + k$$
+        And
+        $$t = \frac{x}{y}; k = y - \frac{x^2}{y}$$
+        \item Rearranging and rewriting the transforms gives:
+        $$T(u) = u^*(t,k) = u(x(t,k),y(t,k)) = u(yt, xt + k) = f(k)$$
+        $$T(u^*) = u(x,y) = u^*(t(x,y),k(x,y)) = u^*(\frac{x}{y},y - \frac{x^2}{y}) = f(y - \frac{x^2}{y})$$
+        \item And using the initial condition gives:
+        $$u(0,y) = e^{-y^2} = f(y)$$
+        So
+        $$u(x,y) = e^{-\left(y - \frac{x^2}{y}\right)^2}$$
+        Which satisfies the initial condition, but it does not satisfy the original equation, so I'm doing something wrong. But after graphing it, it appears that this solution works in the hourglass region, and the only area in which it looks off is in the bow-tie, so possibly it does work.
+        
+    \end{enumerate}
+
+    \newpage
+    \item 8)
+    Solve the following:
+    $$au_x + bu_y + cu = 0$$
+    \begin{enumerate}
+        \item First, move $cu$ to the other side:
+        $$au_x + bu_y =  - cu$$
+        \item Now note that this is the directional derivative of u.  Thus, we change coordinates using the transform $T$:
+        $$T(u) = u^*(t,k) = u(x(t,k),y(t,k))$$
+        \item Now take the partial derivative of both sides with respect to $t$ or $k$. Either should work. We'll arbitrarily choose $t$.
+        $$\frac{\partial u}{\partial x}\frac{\partial x}{\partial t} + \frac{\partial u}{\partial y}\frac{\partial y}{\partial t} = \frac{\partial u^*}{\partial t}$$
+        \item Now pattern match against the original equation to get the following PDEs:
+        $$\frac{\partial x}{\partial t} = a;\frac{\partial y}{\partial t} = b;\frac{\partial u^*}{\partial t} = -cu$$
+        \item Which, when integrated, give:
+        $$x = at + f_1(k);y = bt + f_2(k);\frac{\partial u^*}{\partial t} = -cu$$
+        In which we have not yet simplified equation 3
+        \item We can simplify the $f_1$ and $f_2$ because we don't need that much generality. Simply letting $f_1 = 0$ and $f_2 = k$ will suffice. Thus:
+        $$x = at ;y = bt + k;\frac{\partial u^*}{\partial t} = -cu$$
+        \item and we can solve for $t$ and $k$ in terms of $y$ and $x$ as a way to invert transform $T$:
+        $$t = \frac{x}{a}; k = y - \frac{bx}{a}$$
+        Which gives us: 
+        $$T(u) = u^*(t,k) = u(at,bt + k)$$
+        $$T^{-1}(u^*) = u(x,y) = u^*(\frac{x}{a},y - \frac{bx}{a})$$
+        \item Now we need to solve the PDE we left above:
+        $$\frac{\partial u^*}{\partial t} = -cu$$
+    \end{enumerate}
+    \newpage
+    \item 13) Use the coordinate method to solve the following equation:
+    $$u_x + 2u_y + (2x-y)u = 2x^2 + 3xy -2y^2$$
+    \begin{enumerate}
+        \item Using the methods from the previous problem, we can get:
+        $$x = t ;y = 2t + k;\frac{\partial u^*}{\partial t} = 2x^2 + 3xy - 2y^2 - (2x-y)u$$
+        $$t = x; k = y - 2x$$
+        $$T(u) = u^*(t,k) = u(t,2t + k)$$
+        $$T^{-1}(u^*) = u(x,y) = u^*(x,y - 2x)$$
+        \item and I am stuck again
+    \end{enumerate}
+    \newpage
+    \item 1.5-5: Solve the following PDE and discuss behavior at boundary conditions given below.
+    $$\forall x,y; u_x(x,y) + yu_y(x,y) = 0$$
+    Transform coordinates:
+    $$\forall s,t; u_x^*(s,t) + y(s,t)u_y^*(s,t) = 0$$
+    which gives the following equations:
+    $$\frac{\partial x}{\partial s} = 1 \rightarrow x(s,t) = s + f_1(t)$$
+    $$\frac{\partial y}{\partial s} = y(s,t) \rightarrow \frac{1}{y(s,t)}\partial y = \partial s \rightarrow y(s,t) = f_2(t)e^s$$
+    $$\frac{\partial u^*}{\partial s} = 0 \rightarrow u^*(s,t) = f(t)$$
+    And we know that $x(s,t)$ can trace out the whole line without $f_1(t)$, so we will drop $f_1(t)$.  Also, we know that $y(s,t)$ traces out the whole plane if $f_2(t) = t$, so these three equations simplify to:
+    $$x(s,t) = s; y(s,t) = te^s; u^*(s,t)=f(t)$$
+    We can also invert the coordinate transforms and get:
+    $$s(x,y) = x; t(x,y) = \frac{y}{e^x}$$
+    And so now we can invert the transform to get $u(x,y)$ from $u^*(s,t)$:
+    $$u(x,y) = f(\frac{y}{e^x})$$
+    Now we consider the boundary condition $u(x,0) = x$
+    $$u(x,0) = f(\frac{0}{e^x}) = f(0) \neq x$$
+    We have found a contradiction because $f(0)$ is constant, and $x$ is not.
+    Now we consider the boundary condition $u(x,0) = 1$
+    $$u(x,0) = f(\frac{0}{e^x}) = f(0) = 1$$
+    Thus, we have found a requirement that $f(0) = 1$, but there are no other requirements on $f$, thus, there are still infinitely many possibilities for the function. The moral of this problem is that we're specifying our boundary along our characteristics instead of against them.
+    \newpage
+    \item 1.5-6: Solve the following PDE
+    $$\forall x,y; u_x(x,y) + 2xy^2u_y(x,y) = 0$$
+    First, divide the whole equation by $x$. This highlights a problem at $x = 0$
+    $$\forall x,y; \frac{1}{x}u_x(x,y) + 2y^2u_y(x,y) = 0$$
+    Now we transform coordinates:
+    $$\forall s,t; \frac{1}{x(s,t)}u_x^*(s,t) + 2y(s,t)^2u_y^*(s,t) = 0$$
+    And we have three smaller PDEs and their solutions:
+    $$\frac{\partial x}{\partial s} = \frac{1}{x(s,t)} \rightarrow x(s,t)^2 = 2s + f_1(t) $$
+    $$\frac{\partial y}{\partial s} = 2y(s,t)^2 \rightarrow y(s,t) = \frac{-1}{2s + f_2(t)}$$
+    $$\frac{\partial u^*}{\partial s} = 0 \rightarrow u^*(s,t) = F(t)$$
+    The next issue is how to choose $f_1$ and $f_2$. If we isolate the $s$ in the $x$ equation, we can substitute it in for the $y$ equation to get:
+    $$y(s,t) = \frac{-1}{x(s,t)^2 + f(t)}$$
+    Which if we simply let $f$ be the negative identity function the characteristics still trace out the whole plane, and we get:
+    $$y(s,t) = \frac{-1}{x(s,t)^2 - t} \rightarrow t = \frac{1}{y}+x^2$$
+    Which means if we invert the transform on $u^*$, we get:
+    $$u(x,y) = F(\frac{1}{y}+x^2)$$
+    Which works if we substitute it back into the original equation.
+    
+\end{itemize}
+\newpage
+\section{The Wave Equation}
+
+For the following wave equation:
+
+$$u_{tt} = c^2u_{xx}$$
+
+with the initial conditions:
+
+$$u(x,0) = \phi(x)$$
+$$u_t(x,0) = \psi(x)$$
+
+is
+$$u(x,t) = \frac{1}{2}\left(\phi(x + ct) + \phi(x-ct)\right) + \frac{1}{2c} \int_{x-ct}^{x+ct} \psi(s) \,ds $$
+
+
+\subsection{Example Problems}
+\begin{itemize}
+
+    \item 2.1-1:
+    Solve $$u_{tt} = c^2u_{xx} ; u(x,0) = e^x ; u_t(x,0) = \sin{x}$$
+    $$u(x,t) = \frac{1}{2}\left(e^{x + ct} + e^{x - ct}\right) + \frac{1}{2c}\int_{x-ct}^{x+ct} \sin{s} \,ds$$
+$$u(x,t) =  \frac{1}{2}\left(e^{x + ct} + e^{x - ct}\right) + \frac{1}{2c} [\cos{(x-ct)}-\cos{(x+ct)}] $$
+    \item 3.1-2:
+    Solve $$u_{tt} = c^2u_{xx} ; u(x,0) = \log{1 + x^2} ; u_t(x,0) = 4 + x$$
+    $$u(x,t) = \frac{1}{2}\left[\log{\left(1 + (x + ct)^2\right)}+\log{\left(1 + (x - ct)^2\right)}\right] + \frac{1}{2c}\int_{x-ct}^{x+ct} (4+s) \,ds$$    
+    $$u(x,t) = \frac{1}{2}\left[\log{\left(1 + (x + ct)^2\right)}+\log{\left(1 + (x - ct)^2\right)}\right] + 4t + xt$$   
+\end{itemize}
+
+\end{document}
