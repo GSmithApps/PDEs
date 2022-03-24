@@ -315,4 +315,15 @@ $$u(x,t) =  \frac{1}{2}\left(e^{x + ct} + e^{x - ct}\right) + \frac{1}{2c} [\cos
     $$u(x,t) = \frac{1}{2}\left[\log{\left(1 + (x + ct)^2\right)}+\log{\left(1 + (x - ct)^2\right)}\right] + 4t + xt$$   
 \end{itemize}
 
+\newpage
+\section{Fourier Series and Boundary Conditions}
+
+I think one of the most important things you can know that will help you when doing fourier series is that fourier series converge to the average of the limit on the left and right. That might seem innocuous, but it will help. Here's how.  We sort of learned two different types or uses of fourier series:
+
+\begin{itemize}
+    \item We learned that that the boundary values determine whether you want to use sines or cosines in your expansion.
+    \item And we also separately learned that when we're computing fourier series to approximate a function, we often extend the function and find its period etc etc to find the fourier coefficients.
+\end{itemize}
+  But what I noticed with the help of the above fact is how to unify these two views of the fourier series. What we can really do is use the boundary conditions to choose how to extend the function, and then that's the function we want to approximate. This is helpful because it unifies the two seemingly separate issues of using a fourier series to approximate a function vs choosing a certain type of fourier series to meet the requirements of a boundary condition. Just extend your function to meet your boundary condition, then the correct choice of sines and cosines will fall out.
+
 \end{document}
